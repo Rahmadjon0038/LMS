@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+.course-container {
+  @apply max-w-6xl mx-auto p-6 grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-12;
+}
+
+.course-card {
+  @apply bg-white  shadow-lg flex flex-col  
+
+}
+
+.course-title {
+  @apply text-xl font-bold mb-2 text-gray-900;
+}
+
+
+.course-duration {
+  @apply  font-semibold mb-2;
+}
+

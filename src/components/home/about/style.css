@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+.aboutContainer {
+  @apply min-h-screen bg-gradient-to-b from-pink-50  to-pink-300 flex flex-col items-center px-12 py-16;
+}
+
+.title {
+  @apply text-5xl font-extrabold text-[#af0d53] mb-6 text-center;
+}
+
+.description {
+  @apply max-w-3xl text-center text-gray-700 text-lg mb-12 leading-relaxed;
+}
+
+.cards {
+  @apply flex flex-col md:flex-row gap-8;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-lg p-8 flex-1 flex flex-col items-center text-center transition-transform transform hover:scale-105;
+}
+
+.icon {
+  @apply text-5xl text-[#af0d53] mb-4;
+}
+
+.cardTitle {
+  @apply text-2xl font-semibold mb-2;
+}
+
+.cardDesc {
+  @apply text-gray-600;
+}
+.stats {
+  @apply flex flex-col md:flex-row justify-center gap-8 mb-12 w-full max-w-5xl;
+}
+
+.statCard {
+  @apply bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transition-transform transform hover:scale-105;
+}
+
+.statNumber {
+  @apply text-3xl md:text-4xl font-bold text-[#af0d53] mb-2;
+}
+
+.statDesc {
+  @apply text-gray-600 text-base md:text-lg;
+}

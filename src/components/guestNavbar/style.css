@@ -1,0 +1,22 @@
+@import "tailwindcss";
+.navbar{
+    @apply  flex justify-between items-center px-0 py-1  bg-white border-b border-gray-400
+}
+/* bg-[#9c0603] */
+.navigate{
+    @apply   flex gap-12 font-[450] 
+}
+
+.auth{
+    @apply flex 
+}
+.auth button{
+    @apply px-4 py-1 rounded-[8px] cursor-pointer
+}
+
+.logo{
+    @apply flex items-center cursor-pointer
+}
+.logoinfo{
+    @apply text-center  text-[#9c0603]
+}
