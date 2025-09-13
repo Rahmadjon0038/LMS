@@ -12,9 +12,11 @@ function Hero() {
         Interaktiv darslar, mashg‘ulotlar va ekspertlardan maslahatlar bilan o‘z mahoratingizni oshiring.
       </p>
       <div className="flex space-x-4">
-        <button className="bg-white text-purple-600 font-semibold px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition">
-          Kurslarni Ko‘rish
-        </button>
+        <a href="#courses">
+          <button className="bg-white text-purple-600 font-semibold px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition">
+            Kurslarni Ko‘rish
+          </button>
+        </a>
         <Register>
           <button className="bg-transparent border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-purple-600 transition">
             Ro‘yxatdan O‘tish

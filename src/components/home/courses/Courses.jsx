@@ -11,7 +11,7 @@ function Courses() {
         Bizning kurslarimiz
       </h1>
 
-      <div className="course-container ">
+      <div className="course-container">
         {courses.map((course, index) => (
           <div key={index}
             className='course-card'>

@@ -4,31 +4,47 @@ import Hero from './hero/Hero'
 import About from './about/About'
 import Courses from './courses/Courses'
 import { BiSolidArrowToTop } from "react-icons/bi";
+import Teams from './teams/Teams'
+import Contact from './contact/Contact'
+
 function Home() {
+  const [scrollSize, setScrollSize] = useState(0);
 
-  const [scrolSize, setScrolSize] = useState();
-  window.addEventListener('scroll', () => {
-    console.log('Vertikal scroll:', window.scrollY);
-    setScrolSize(window.scrollY)
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollSize(window.scrollY);
+    };
 
-  const scrolTopFunction = () => {
-    window.scrollTo(0, 0)
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  const scrollTopFunction = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
-
   return (
-    <div className='h-screen bgimg '>
+    <div className='h-screen bgimg'>
       <Hero />
       <About />
       <Courses />
-      {
-        scrolSize > 400 ?
-          <button onClick={scrolTopFunction} className={`p-2 text-white bg-pink-500 fixed bottom-10 right-10 transition-all cursor-pointer active:scale-90`}><BiSolidArrowToTop className='text-2xl' /></button>
-          : ''
-      }
-
-    </div >
+      <Teams />
+      <Contact/>
+      {scrollSize > 400 && (
+        <button
+          onClick={scrollTopFunction}
+          className="p-2 text-white bg-pink-500 fixed bottom-10 right-10 transition-all cursor-pointer active:scale-90"
+        >
+          <BiSolidArrowToTop className='text-2xl' />
+        </button>
+      )}
+    </div>
   )
 }
 
