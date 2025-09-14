@@ -1,12 +1,13 @@
+'use client'
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
-import MiniLoader from '../miniLoader/MiniLoader';
 import { useGetNotify } from '@/hooks/notify';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useRole } from '@/context/auth';
+import { useLogin } from '@/hooks/auth';
 
 const style = {
     position: 'absolute',
@@ -22,7 +23,7 @@ const style = {
 
 export default function Login({ children }) {
     const notify = useGetNotify();
-
+    const loginMutation = useLogin()
     const { setRole, openLogin: open, setOpenLogin: setOpen, openRegis, setOpenregis } = useRole()
 
     const handleOpen = () => setOpen(true);
@@ -33,9 +34,8 @@ export default function Login({ children }) {
         setOpenLogin(false)
     }
 
-    const [loading, setLoading] = useState(false);
     const [formdata, setFormdata] = useState({
-        firstname: "",
+        email: "",
         password: "",
     });
 
@@ -47,24 +47,26 @@ export default function Login({ children }) {
 
     function handleSumbit(e) {
         e.preventDefault();
-        setLoading(true);
 
-        setTimeout(() => {
-            setLoading(false);
-
-            const userRole = "admin"; 
-
-            Cookies.set("role", userRole);
-            setRole('user')
-
-            if (userRole === "admin" || userRole === "teacher") {
-                router.push(`/dashboard/${userRole}`);
-            } else {
-                router.push('/');
+        loginMutation.mutate(formdata,
+            {
+                onSuccess: (data) => {
+                    notify('ok', data?.message);
+                    Cookies.set("role", data?.role);
+                    Cookies.set("token", data?.token);
+                    setRole('user')
+                    const userRole = data?.role;
+                    if (userRole === "admin" || userRole === "teacher" || userRole === "student") {
+                        router.push(`/dashboard/${userRole}`);
+                    } else {
+                        router.push('/');
+                    }
+                },
+                onError: (error) => {
+                    notify('err', error?.response?.data?.message);
+                }
             }
-
-            notify('ok', "Login muvaffaqiyatli");
-        }, 1000);
+        )
     }
 
     return (
@@ -98,7 +100,7 @@ export default function Login({ children }) {
                         <form onSubmit={handleSumbit} className="w-full flex flex-col gap-4">
                             <input
                                 required
-                                name="firstname"
+                                name="email"
                                 onChange={handleChange}
                                 type="text"
                                 placeholder="First Name"
@@ -118,7 +120,8 @@ export default function Login({ children }) {
                                 type="submit"
                                 className="bg-white text-purple-700 font-semibold p-3 rounded-lg hover:bg-purple-50 shadow-md flex justify-center items-center transition"
                             >
-                                {loading ? <MiniLoader color={'purple'} /> : "Login"}
+                                {/* {loginmutation.isLoading ? <MiniLoader color={'purple'} /> : "Login"} */}
+                                sumbit
                             </button>
                         </form>
 

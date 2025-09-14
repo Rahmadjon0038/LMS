@@ -1,10 +1,11 @@
+'use client'
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
 import MiniLoader from '../miniLoader/MiniLoader';
 import { useGetNotify } from '@/hooks/notify';
 import { useRole } from '@/context/auth';
+import { useState } from 'react';
 
 const style = {
     position: 'absolute',
