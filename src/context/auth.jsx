@@ -6,6 +6,8 @@ const RoleContext = createContext();
 
 export function RoleProvider({ children }) {
   const [role, setRole] = useState(null);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openRegis, setOpenregis] = useState(false);
 
   useEffect(() => {
     const r = Cookies.get("role");
@@ -13,7 +15,7 @@ export function RoleProvider({ children }) {
   }, []);
 
   return (
-    <RoleContext.Provider value={{ role, setRole }}>
+    <RoleContext.Provider value={{ role, setRole, openLogin, setOpenLogin, openRegis, setOpenregis }}>
       {children}
     </RoleContext.Provider>
   );

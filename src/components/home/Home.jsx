@@ -6,6 +6,8 @@ import Courses from './courses/Courses'
 import { BiSolidArrowToTop } from "react-icons/bi";
 import Teams from './teams/Teams'
 import Contact from './contact/Contact'
+import Footer from '../Footer/Footer'
+import FloatingButtons from './LeftBtns'
 
 function Home() {
   const [scrollSize, setScrollSize] = useState(0);
@@ -36,6 +38,8 @@ function Home() {
       <Courses />
       <Teams />
       <Contact/>
+      <Footer/>
+      <FloatingButtons/>
       {scrollSize > 400 && (
         <button
           onClick={scrollTopFunction}
@@ -44,6 +48,7 @@ function Home() {
           <BiSolidArrowToTop className='text-2xl' />
         </button>
       )}
+      
     </div>
   )
 }

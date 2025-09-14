@@ -2,108 +2,131 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
-import './style.css'
 import MiniLoader from '../miniLoader/MiniLoader';
 import { useGetNotify } from '@/hooks/notify';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { useRole } from '@/context/auth';
+
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '90%',
-    height: 600,
-    maxWidth: 1000,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
+    maxWidth: 450,
+    bgcolor: 'transparent',
+    boxShadow: 'none',
     outline: 'none',
-    p: 0,
 };
 
 export default function Login({ children }) {
-    const notify = useGetNotify()
-    const [open, setOpen] = useState(false);
+    const notify = useGetNotify();
+
+    const { setRole, openLogin: open, setOpenLogin: setOpen, openRegis, setOpenregis } = useRole()
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [loading, setLoading] = useState(false)
+    const navigateRegister = () => {
+        setOpenregis(true)
+        setOpenLogin(false)
+    }
 
+    const [loading, setLoading] = useState(false);
     const [formdata, setFormdata] = useState({
         firstname: "",
         password: "",
-        email: ""
-    })
-    const router = useRouter()
+    });
+
+    const router = useRouter();
 
     const handleChange = (e) => {
-        setFormdata({ ...formdata, [e.target.name]: e.target.value })
-    }
+        setFormdata({ ...formdata, [e.target.name]: e.target.value });
+    };
 
     function handleSumbit(e) {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
+
         setTimeout(() => {
-            setLoading(false)
-            console.log(formdata)
-            notify('ok', "Login mofaqqiyatli")
-            Cookies.set('role', 'admin')
-            router.push('/dashboard')
+            setLoading(false);
+
+            const userRole = "admin"; 
+
+            Cookies.set("role", userRole);
+            setRole('user')
+
+            if (userRole === "admin" || userRole === "teacher") {
+                router.push(`/dashboard/${userRole}`);
+            } else {
+                router.push('/');
+            }
+
+            notify('ok', "Login muvaffaqiyatli");
         }, 1000);
     }
 
     return (
         <div>
-            <button onClick={handleOpen}>{children}</button>
+            <button
+                onClick={handleOpen}>
+                {children}
+            </button>
+
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <div className="formContainer flex flex-col items-center justify-center  bg-gray-100">
-                        <div className="forminfo mb-4 text-center">
-                            <h1 className="text-3xl font-bold text-gray-800">Welcome Back!</h1>
-                            <p className="text-gray-600">Please login to continue</p>
+                    <div className="bg-gradient-to-br from-purple-700 via-pink-600 to-red-500 rounded-2xl shadow-2xl p-8 flex flex-col items-center relative">
+                        {/* Close Button */}
+                        <button
+                            onClick={handleClose}
+                            className="absolute top-4 right-4 text-white text-xl font-bold hover:text-gray-200 transition">
+                            &times;
+                        </button>
+
+                        {/* Header */}
+                        <div className="text-center mb-6">
+                            <h1 className="text-3xl font-bold text-white">Welcome Back!</h1>
+                            <p className="text-purple-200 mt-2">Please login to continue</p>
                         </div>
 
-                        <form onSubmit={handleSumbit} className="rounded-lg shadow-md w-full max-w-md flex flex-col gap-6">
-                            <h1 className="text-2xl font-semibold mb-2 text-white text-center">Register</h1>
-
+                        {/* Form */}
+                        <form onSubmit={handleSumbit} className="w-full flex flex-col gap-4">
                             <input
                                 required
-                                name='firstname'
+                                name="firstname"
                                 onChange={handleChange}
                                 type="text"
                                 placeholder="First Name"
-                                className="border border-white rounded p-2 focus:outline-none focus:ring-2  outline-0 text-white "
-                            />
-                            <input
-                                required
-                                name='password'
-                                onChange={handleChange}
-                                type="text"
-                                placeholder="password"
-                                className="border border-white rounded p-2 focus:outline-none focus:ring-2  outline-0 text-white "
-                            />
-                            <input
-                                required
-                                name='email'
-                                onChange={handleChange}
-                                type="text"
-                                placeholder="Email"
-                                className="border border-white rounded p-2 focus:outline-none focus:ring-2  outline-0 text-white "
+                                className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-pink-400 focus:outline-none shadow-sm transition"
                             />
 
+                            <input
+                                required
+                                name="password"
+                                onChange={handleChange}
+                                type="password"
+                                placeholder="Password"
+                                className="p-3 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-pink-400 focus:outline-none shadow-sm transition"
+                            />
 
                             <button
-                                type="btn"
-                                className="bg-[#af0d53] text-white p-2 rounded  transition flex justify-center">
-                                {loading ? <MiniLoader color={'white'} /> : "Register"}
+                                type="submit"
+                                className="bg-white text-purple-700 font-semibold p-3 rounded-lg hover:bg-purple-50 shadow-md flex justify-center items-center transition"
+                            >
+                                {loading ? <MiniLoader color={'purple'} /> : "Login"}
                             </button>
                         </form>
-                    </div>
 
+                        {/* Footer */}
+                        <div className="mt-6 text-purple-200 text-sm">
+                            Don't have an account? <span onClick={navigateRegister} className="underline cursor-pointer hover:text-white">Register</span>
+                        </div>
+                    </div>
                 </Box>
             </Modal>
         </div>

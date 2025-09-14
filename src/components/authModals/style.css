@@ -1,7 +1,7 @@
 @import "tailwindcss";
 .formContainer{
-    background-image: url('../../../public/formbg.jpg');
-    background-position: center;
+    /* background-image: url('../../../public/formbg.jpg'); */
+    /* background-position: center; */
     background-size: cover;
     @apply h-full grid grid-cols-2 
 }

@@ -1,7 +1,9 @@
 import Register from '@/components/authModals/Register';
+import { useRole } from '@/context/auth';
 import React from 'react';
 
 function Hero() {
+  const { role } = useRole()
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-6 text-center">
       <h1 className="text-5xl font-bold mb-8">
@@ -17,11 +19,14 @@ function Hero() {
             Kurslarni Ko‘rish
           </button>
         </a>
-        <Register>
-          <button className="bg-transparent border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-purple-600 transition">
-            Ro‘yxatdan O‘tish
-          </button>
-        </Register>
+
+        {role == 'user' ? '' :
+          <Register>
+            <button className="bg-transparent border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-purple-600 transition">
+              Ro‘yxatdan O‘tish
+            </button>
+          </Register>
+        }
       </div>
     </div>
   );
