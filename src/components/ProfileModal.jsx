@@ -6,6 +6,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Avatar from "@mui/material/Avatar";
+import { useRole } from "@/context/auth";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 // Local user ma'lumotlari
 const userData = {
@@ -32,6 +35,10 @@ const style = {
 export default function UserProfileModal({ children }) {
     const [open, setOpen] = React.useState(false);
     const [edit, setEdit] = React.useState(true);
+
+    const { role, setRole } = useRole();
+    const router = useRouter();
+
     const [userUpdate, setUserUpdate] = React.useState({
         firstname: userData.firstname,
         lastname: userData.lastname,
@@ -39,7 +46,17 @@ export default function UserProfileModal({ children }) {
     });
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(true)
+    };
+
+    const logout = () => {
+        setRole(null)
+        Cookies.remove('token');
+        Cookies.remove('role');
+        router.replace('/')
+        setOpen(false)
+    }
 
     const onchange = (e) => {
         const { name, value } = e.target;
@@ -143,7 +160,7 @@ export default function UserProfileModal({ children }) {
                         >
                             {edit ? "Yangilash" : "Saqlash"}
                         </button>
-                        <Button variant="outlined" color="error" onClick={handleClose}>
+                        <Button variant="outlined" color="error"  onClick={logout}>
                             Chiqish
                         </Button>
                     </div>

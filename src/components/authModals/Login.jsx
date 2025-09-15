@@ -8,6 +8,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useRole } from '@/context/auth';
 import { useLogin } from '@/hooks/auth';
+import MiniLoader from '../miniLoader/MiniLoader';
+import Loader from '../Loader/Loader';
 
 const style = {
     position: 'absolute',
@@ -39,6 +41,7 @@ export default function Login({ children }) {
         password: "",
     });
 
+
     const router = useRouter();
 
     const handleChange = (e) => {
@@ -54,7 +57,9 @@ export default function Login({ children }) {
                     notify('ok', data?.message);
                     Cookies.set("role", data?.role);
                     Cookies.set("token", data?.token);
-                    setRole('user')
+                    
+                    setRole(data?.role)   // Role context 
+
                     const userRole = data?.role;
                     if (userRole === "admin" || userRole === "teacher" || userRole === "student") {
                         router.push(`/dashboard/${userRole}`);
@@ -69,6 +74,9 @@ export default function Login({ children }) {
         )
     }
 
+
+
+
     return (
         <div>
             <button
@@ -76,7 +84,7 @@ export default function Login({ children }) {
                 {children}
             </button>
 
-            <Modal
+            {loginMutation.isLoading ? <Loader /> : <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
@@ -118,10 +126,9 @@ export default function Login({ children }) {
 
                             <button
                                 type="submit"
-                                className="bg-white text-purple-700 font-semibold p-3 rounded-lg hover:bg-purple-50 shadow-md flex justify-center items-center transition"
-                            >
-                                {/* {loginmutation.isLoading ? <MiniLoader color={'purple'} /> : "Login"} */}
-                                sumbit
+                                className="bg-white text-purple-700 font-semibold p-3 rounded-lg hover:bg-purple-50 shadow-md flex justify-center items-center transition">
+                                {loginMutation.isLoading ? <MiniLoader color={'purple'} /> : "Login"}
+                                {/* sumbit */}
                             </button>
                         </form>
 
@@ -131,7 +138,7 @@ export default function Login({ children }) {
                         </div>
                     </div>
                 </Box>
-            </Modal>
+            </Modal>}
         </div>
     );
 }

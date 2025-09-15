@@ -9,8 +9,11 @@ import Teams from './teams/Teams'
 import Contact from './contact/Contact'
 import Footer from '../Footer/Footer'
 import FloatingButtons from './LeftBtns'
+import { useGetHomedata } from '@/hooks/home'
+import Loader from '../Loader/Loader'
 
 function Home() {
+  const { data, isLoading, error } = useGetHomedata(); // home api 
   const [scrollSize, setScrollSize] = useState(0);
 
   useEffect(() => {
@@ -32,15 +35,17 @@ function Home() {
     });
   }
 
+  if(isLoading) return <Loader/>
+
   return (
     <div className='h-screen bgimg'>
       <Hero />
       <About />
       <Courses />
       <Teams />
-      <Contact/>
-      <Footer/>
-      <FloatingButtons/>
+      <Contact />
+      <Footer />
+      <FloatingButtons />
       {scrollSize > 400 && (
         <button
           onClick={scrollTopFunction}
@@ -49,7 +54,7 @@ function Home() {
           <BiSolidArrowToTop className='text-2xl' />
         </button>
       )}
-      
+
     </div>
   )
 }
